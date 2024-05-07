@@ -24,7 +24,7 @@ provider "aws" {
   # shared_config_files=["~/.aws/config"] # Or $HOME/.aws/config
   # shared_credentials_files = ["~/.aws/credentials"] # Or $HOME/.aws/credentials
   #profile        = "ljh-test"
-  profile        = "default"
+  # profile        = "default"
 }
 
 # Error handling with "The configmap "aws-auth" does not exist"
