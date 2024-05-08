@@ -183,32 +183,23 @@ output "self_managed_node_groups_autoscaling_group_names" {
 }
 
 ################################################################################
-# Additional
-################################################################################
-
-output "aws_auth_configmap_yaml" {
-  description = "Formatted yaml output for base aws-auth configmap containing roles used in cluster node groups/fargate profiles"
-  value       = module.eks.aws_auth_configmap_yaml
-}
-
-################################################################################
 # IAM Role for Service Account (IRSA)
 ################################################################################
 
-# output "karpenter_irsa_name" {
-#   description = "The name of the IAM role for service accounts"
-#   value       = module.karpenter.irsa_name
-# }
+output "karpenter_irsa_name" {
+  description = "The name of the IAM role for service accounts"
+  value       = module.karpenter.node_iam_role_name
+}
 
-# output "karpenter_irsa_arn" {
-#   description = "The Amazon Resource Name (ARN) specifying the IAM role for service accounts"
-#   value       = module.karpenter.irsa_arn
-# }
+output "karpenter_irsa_arn" {
+  description = "The Amazon Resource Name (ARN) specifying the IAM role for service accounts"
+  value       = module.karpenter.node_iam_role_arn
+}
 
-# output "karpenter_irsa_unique_id" {
-#   description = "Stable and unique string identifying the IAM role for service accounts"
-#   value       = module.karpenter.irsa_unique_id
-# }
+output "karpenter_irsa_unique_id" {
+  description = "Stable and unique string identifying the IAM role for service accounts"
+  value       = module.karpenter.node_iam_role_unique_id
+}
 
 ################################################################################
 # Node Termination Queue

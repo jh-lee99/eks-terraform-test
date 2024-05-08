@@ -33,6 +33,10 @@ provider "aws" {
 #   name = module.eks.cluster_name
 # }
 
+data "aws_iam_role" "ljh_cloud9_test_admin" {
+  name = "ljh-cloud9-test-admin"
+}
+
 data "aws_eks_cluster_auth" "default" {
   name = module.eks.cluster_name
 }

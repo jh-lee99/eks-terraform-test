@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
+  version = "~> 20.0"
 
   cluster_name                   = local.name
   cluster_version                = local.cluster_version
@@ -30,19 +30,19 @@ module "eks" {
     provider_key_arn = module.kms.key_arn
   }
 
-  manage_aws_auth_configmap = true
+  # manage_aws_auth_configmap = true
 
-  aws_auth_roles = [
-    # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
-    {
-      rolearn  = module.karpenter.iam_role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = [
-        "system:bootstrappers",
-        "system:nodes",
-      ]
-    },
-  ]
+  # aws_auth_roles = [
+  #   # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
+  #   {
+  #     rolearn  = module.karpenter.iam_role_arn
+  #     username = "system:node:{{EC2PrivateDNSName}}"
+  #     groups = [
+  #       "system:bootstrappers",
+  #       "system:nodes",
+  #     ]
+  #   },
+  # ]
   iam_role_additional_policies = {
     additional = aws_iam_policy.additional.arn
   }
@@ -89,6 +89,26 @@ module "eks" {
       desired_size = 1
 
       subnet_ids = module.vpc.private_subnets
+    }
+  }
+
+  enable_cluster_creator_admin_permissions = true
+
+  access_entries = {
+    # One access entry with a policy associated
+    example = {
+      kubernetes_groups = []
+      principal_arn     = "arn:aws:iam::123456789012:role/something"
+
+      policy_associations = {
+        example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+          access_scope = {
+            namespaces = ["default"]
+            type       = "namespace"
+          }
+        }
+      }
     }
   }
 
